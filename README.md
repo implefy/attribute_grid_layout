@@ -1,4 +1,4 @@
-# Attribute Grid Layout for Odoo 18
+# Attribute Grid Layout for Odoo 18/19
 
 This module changes the layout of product attributes with multi-checkbox display type from a vertical list to a responsive 3-column grid, including attribute value images.
 
@@ -30,7 +30,7 @@ To add images to your attribute values:
 
 ## Requirements
 
-- Odoo 18.0
+- Odoo 18.0 or 19.0
 - `website_sale` module
 
 ## Screenshots

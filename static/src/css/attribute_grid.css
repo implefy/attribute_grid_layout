@@ -1,4 +1,5 @@
 /* Attribute Grid Layout - Multi-checkbox in 3-column grid with images */
+/* Compatible with Odoo 18 and 19 */
 
 /* Grid container for multi-checkbox attributes */
 .o_attribute_grid_layout {
@@ -9,7 +10,9 @@
 }
 
 /* Individual attribute value item in grid */
-.o_attribute_grid_layout .form-check {
+.o_attribute_grid_layout .form-check,
+.o_attribute_grid_layout > label,
+.o_attribute_grid_layout > div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,24 +25,35 @@
     margin: 0;
 }
 
-.o_attribute_grid_layout .form-check:hover {
+.o_attribute_grid_layout .form-check:hover,
+.o_attribute_grid_layout > label:hover,
+.o_attribute_grid_layout > div:hover {
     border-color: #875A7B;
     box-shadow: 0 2px 8px rgba(135, 90, 123, 0.15);
 }
 
 /* Checked state styling */
-.o_attribute_grid_layout .form-check:has(input:checked) {
+.o_attribute_grid_layout .form-check:has(input:checked),
+.o_attribute_grid_layout > label:has(input:checked),
+.o_attribute_grid_layout > div:has(input:checked) {
     border-color: #875A7B;
     background-color: #f8f4f7;
 }
 
-/* Attribute value image */
-.o_attribute_grid_layout .attribute-value-image {
+/* Attribute value image - target Odoo's image elements */
+.o_attribute_grid_layout img,
+.o_attribute_grid_layout .oe_img_bg,
+.o_attribute_grid_layout .attribute-value-image,
+.o_attribute_grid_layout [style*="background-image"] {
     width: 60px;
     height: 60px;
     object-fit: contain;
     margin-bottom: 8px;
     border-radius: 4px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    order: -1; /* Place image above checkbox */
 }
 
 /* Image placeholder when no image exists */
@@ -57,19 +71,24 @@
 }
 
 /* Checkbox styling */
-.o_attribute_grid_layout .form-check-input {
+.o_attribute_grid_layout .form-check-input,
+.o_attribute_grid_layout input[type="checkbox"] {
     margin: 0 0 6px 0;
     width: 18px;
     height: 18px;
+    flex-shrink: 0;
 }
 
-.o_attribute_grid_layout .form-check-input:checked {
+.o_attribute_grid_layout .form-check-input:checked,
+.o_attribute_grid_layout input[type="checkbox"]:checked {
     background-color: #875A7B;
     border-color: #875A7B;
 }
 
 /* Label styling */
-.o_attribute_grid_layout .form-check-label {
+.o_attribute_grid_layout .form-check-label,
+.o_attribute_grid_layout label span,
+.o_attribute_grid_layout .o_variant_pills_input_value {
     text-align: center;
     font-size: 13px;
     line-height: 1.3;
@@ -79,19 +98,22 @@
 }
 
 /* Extra price display */
-.o_attribute_grid_layout .text-muted {
+.o_attribute_grid_layout .text-muted,
+.o_attribute_grid_layout .badge {
     font-size: 11px;
     display: block;
     margin-top: 4px;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments - Tablet */
 @media (max-width: 768px) {
     .o_attribute_grid_layout {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
 
+    .o_attribute_grid_layout img,
+    .o_attribute_grid_layout .oe_img_bg,
     .o_attribute_grid_layout .attribute-value-image,
     .o_attribute_grid_layout .attribute-value-no-image {
         width: 50px;
@@ -99,23 +121,29 @@
     }
 }
 
+/* Responsive adjustments - Mobile */
 @media (max-width: 480px) {
     .o_attribute_grid_layout {
         grid-template-columns: repeat(2, 1fr);
         gap: 6px;
     }
 
-    .o_attribute_grid_layout .form-check {
+    .o_attribute_grid_layout .form-check,
+    .o_attribute_grid_layout > label,
+    .o_attribute_grid_layout > div {
         padding: 8px;
     }
 
+    .o_attribute_grid_layout img,
+    .o_attribute_grid_layout .oe_img_bg,
     .o_attribute_grid_layout .attribute-value-image,
     .o_attribute_grid_layout .attribute-value-no-image {
         width: 40px;
         height: 40px;
     }
 
-    .o_attribute_grid_layout .form-check-label {
+    .o_attribute_grid_layout .form-check-label,
+    .o_attribute_grid_layout label span {
         font-size: 12px;
     }
 }
