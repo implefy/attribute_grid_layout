@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="product_attribute_value_form_view_inherit_grid_position" model="ir.ui.view">
-        <field name="name">product.attribute.value.form.inherit.grid.position</field>
+
+    <!-- Form view for product.attribute.value - used when editing values in dialog -->
+    <record id="product_attribute_value_view_form_grid" model="ir.ui.view">
+        <field name="name">product.attribute.value.form.grid</field>
         <field name="model">product.attribute.value</field>
-        <field name="inherit_id" ref="product.product_attribute_value_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='is_custom']" position="after">
-                <field name="grid_position" widget="grid_position"/>
+            <form string="Attribute Value">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="attribute_id"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="is_custom"/>
+                            <field name="html_color"/>
+                            <field name="image" widget="image"/>
+                        </group>
+                    </group>
+                    <group string="Grid Position">
+                        <field name="grid_position" widget="grid_position" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Inherit product.attribute form to add grid_position column in values list -->
+    <record id="product_attribute_view_form_inherit_grid" model="ir.ui.view">
+        <field name="name">product.attribute.form.inherit.grid</field>
+        <field name="model">product.attribute</field>
+        <field name="inherit_id" ref="product.product_attribute_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='value_ids']/list/field[@name='default_extra_price']" position="after">
+                <field name="grid_position" optional="show"/>
             </xpath>
         </field>
     </record>
+
 </odoo>
