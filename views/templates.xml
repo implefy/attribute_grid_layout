@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Override the product configurator attribute display for multi-checkbox.
+        This template modifies how multi-checkbox attributes are rendered on the product page.
+    -->
+    <template id="attribute_grid_multi_checkbox" inherit_id="website_sale.product" name="Attribute Grid Multi Checkbox">
+        <!-- Add grid layout class to attribute containers -->
+        <xpath expr="//div[@id='product_attributes_simple']" position="attributes">
+            <attribute name="class" add="attribute-grid-container" separator=" "/>
+        </xpath>
+    </template>
+
+    <!--
+        Assets: Additional frontend styles
+        This ensures styles are loaded on the website frontend
+    -->
+    <template id="attribute_grid_assets" inherit_id="website.assets_frontend" name="Attribute Grid Assets">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/attribute_grid_layout/static/src/css/attribute_grid.css"/>
+        </xpath>
+    </template>
+
+</odoo>

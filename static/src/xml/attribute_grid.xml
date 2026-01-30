@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- Override the multi-checkbox attribute display to use grid layout with images -->
+    <t t-name="website_sale.product_attribute_value_multi_checkbox" t-inherit="website_sale.product_attribute_value_multi_checkbox" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('d-flex')]" position="attributes">
+            <attribute name="class" add="o_attribute_grid_layout" separator=" "/>
+            <attribute name="class" remove="d-flex flex-wrap"/>
+        </xpath>
+    </t>
+
+    <!-- Alternative: Full replacement template for more control -->
+    <t t-name="attribute_grid_layout.product_attribute_value_multi_checkbox_grid" t-inherit="website_sale.product_attribute_value_multi_checkbox" t-inherit-mode="replace">
+        <div class="o_attribute_grid_layout">
+            <t t-foreach="combination_info['attribute_values']" t-as="pav">
+                <t t-set="is_selected" t-value="pav['id'] in selected_attribute_value_ids"/>
+                <t t-set="is_available" t-value="pav['id'] not in archived_combination_info['attribute_value_ids']"/>
+                <label t-attf-class="form-check #{not is_available and 'css_not_available' or ''}">
+                    <!-- Attribute value image -->
+                    <t t-if="pav.get('image')">
+                        <img t-attf-src="/web/image/product.attribute.value/#{pav['id']}/image/60x60"
+                             class="attribute-value-image"
+                             t-att-alt="pav['name']"
+                             loading="lazy"/>
+                    </t>
+                    <t t-else="">
+                        <div class="attribute-value-no-image">
+                            <i class="fa fa-image"/>
+                        </div>
+                    </t>
+                    <!-- Checkbox input -->
+                    <input type="checkbox"
+                           class="form-check-input"
+                           t-att-checked="is_selected"
+                           t-att-data-value_id="pav['id']"
+                           t-att-data-attribute_id="combination_info['attribute_id']"
+                           t-att-disabled="not is_available"/>
+                    <!-- Label with value name -->
+                    <span class="form-check-label">
+                        <t t-out="pav['name']"/>
+                        <!-- Extra price if applicable -->
+                        <t t-if="pav.get('price_extra')">
+                            <small class="text-muted">
+                                (<t t-out="pav['price_extra']"/>)
+                            </small>
+                        </t>
+                    </span>
+                </label>
+            </t>
+        </div>
+    </t>
+
+</templates>
