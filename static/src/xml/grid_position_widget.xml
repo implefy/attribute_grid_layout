@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="attribute_grid_layout.GridPositionField">
+        <div class="o_grid_position_field">
+            <div class="grid_position_container">
+                <t t-foreach="gridPositions" t-as="position" t-key="position.value">
+                    <div
+                        t-attf-class="grid_position_cell {{ isSelected(position) ? 'selected' : '' }} {{ props.readonly ? 'readonly' : '' }}"
+                        t-att-data-position="position.value"
+                        t-att-title="position.label"
+                        t-on-click="() => this.onCellClick(position)">
+                        <span class="cell_label" t-esc="position.label"/>
+                    </div>
+                </t>
+            </div>
+            <div class="grid_position_info" t-if="currentValue">
+                Selected: <strong t-esc="getPositionLabel(currentValue)"/>
+            </div>
+        </div>
+    </t>
+</templates>

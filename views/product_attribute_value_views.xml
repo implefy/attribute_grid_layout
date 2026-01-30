@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_attribute_value_form_view_inherit_grid_position" model="ir.ui.view">
+        <field name="name">product.attribute.value.form.inherit.grid.position</field>
+        <field name="model">product.attribute.value</field>
+        <field name="inherit_id" ref="product.product_attribute_value_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_custom']" position="after">
+                <field name="grid_position" widget="grid_position"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
