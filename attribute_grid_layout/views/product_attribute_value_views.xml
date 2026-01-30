@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Form view for product.attribute.value - used when editing values in dialog -->
+    <!-- Form view for product.attribute.value with grid position widget -->
     <record id="product_attribute_value_view_form_grid" model="ir.ui.view">
         <field name="name">product.attribute.value.form.grid</field>
         <field name="model">product.attribute.value</field>
+        <field name="priority">10</field>
         <field name="arch" type="xml">
             <form string="Attribute Value">
                 <sheet>
@@ -16,11 +17,12 @@
                         </group>
                         <group>
                             <field name="is_custom"/>
-                            <field name="html_color"/>
+                            <field name="html_color" widget="color"/>
                             <field name="image" widget="image"/>
                         </group>
                     </group>
-                    <group string="Grid Position">
+                    <separator string="Grid Position"/>
+                    <group>
                         <field name="grid_position" widget="grid_position" nolabel="1"/>
                     </group>
                 </sheet>
@@ -28,16 +30,34 @@
         </field>
     </record>
 
-    <!-- Inherit product.attribute form to add grid_position column in values list -->
-    <record id="product_attribute_view_form_inherit_grid" model="ir.ui.view">
-        <field name="name">product.attribute.form.inherit.grid</field>
-        <field name="model">product.attribute</field>
-        <field name="inherit_id" ref="product.product_attribute_view_form"/>
+    <!-- Tree view for product.attribute.value with grid position column -->
+    <record id="product_attribute_value_view_tree_grid" model="ir.ui.view">
+        <field name="name">product.attribute.value.tree.grid</field>
+        <field name="model">product.attribute.value</field>
+        <field name="priority">10</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='value_ids']/list/field[@name='default_extra_price']" position="after">
-                <field name="grid_position" optional="show"/>
-            </xpath>
+            <tree string="Attribute Values">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="html_color" widget="color"/>
+                <field name="is_custom"/>
+                <field name="grid_position"/>
+            </tree>
         </field>
     </record>
+
+    <!-- Action to manage attribute values with grid position -->
+    <record id="action_product_attribute_value_grid" model="ir.actions.act_window">
+        <field name="name">Attribute Values</field>
+        <field name="res_model">product.attribute.value</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu item under Configuration -->
+    <menuitem id="menu_product_attribute_value_grid"
+              name="Attribute Values (Grid)"
+              parent="sale.menu_sale_config"
+              action="action_product_attribute_value_grid"
+              sequence="50"/>
 
 </odoo>
