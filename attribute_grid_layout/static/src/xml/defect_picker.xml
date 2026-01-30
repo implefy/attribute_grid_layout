@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="attribute_grid_layout.DefectPicker">
+        <div class="o_defect_picker">
+            <div class="defect_picker_container">
+                <div class="defect_picker_image_wrapper">
+                    <img t-if="props.productImage"
+                         t-att-src="props.productImage"
+                         class="defect_picker_image"
+                         alt="Product"/>
+                    <div t-else="" class="defect_picker_no_image">
+                        <span class="text-muted">No image configured</span>
+                    </div>
+                    <div class="defect_picker_grid_overlay" t-att-style="gridStyle">
+                        <t t-foreach="gridCells" t-as="cell" t-key="cell.label">
+                            <div t-attf-class="defect_grid_cell {{ cell.isMarked ? 'marked' : '' }} {{ cell.hasNotes ? 'has_notes' : '' }} {{ props.readonly ? 'readonly' : '' }}"
+                                 t-att-data-x="cell.x"
+                                 t-att-data-y="cell.y"
+                                 t-att-title="cell.label + (cell.notes ? ': ' + cell.notes : '')"
+                                 t-on-click="() => this.onCellClick(cell)"
+                                 t-on-contextmenu="(ev) => this.onCellRightClick(ev, cell)">
+                                <span class="cell_label" t-esc="cell.label"/>
+                                <span t-if="cell.isMarked" class="defect_marker">
+                                    <i t-if="cell.hasNotes" class="fa fa-exclamation-circle"/>
+                                    <i t-else="" class="fa fa-times-circle"/>
+                                </span>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <div class="defect_picker_footer">
+                <div class="defect_count">
+                    <strong t-esc="defectCount"/> defect(s) marked
+                </div>
+                <button t-if="!props.readonly and defectCount > 0"
+                        type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        t-on-click="clearAll">
+                    <i class="fa fa-trash-o"/> Clear All
+                </button>
+            </div>
+
+            <div class="defect_picker_help text-muted small mt-2">
+                <span t-if="!props.readonly">
+                    Click a cell to mark a defect. Click again to add/edit notes. Right-click to remove.
+                </span>
+            </div>
+
+            <!-- Note Popup -->
+            <div t-if="state.notePopupVisible" class="defect_note_popup_backdrop" t-on-click="closeNotePopup">
+                <div class="defect_note_popup" t-on-click.stop="">
+                    <div class="defect_note_popup_header">
+                        <strong>Defect at <t t-esc="state.activeCell ? getCellLabel(state.activeCell.x, state.activeCell.y) : ''"/></strong>
+                        <button type="button" class="btn-close" t-on-click="closeNotePopup"/>
+                    </div>
+                    <div class="defect_note_popup_body">
+                        <label class="form-label">Notes (optional):</label>
+                        <textarea
+                            t-ref="noteInput"
+                            class="form-control"
+                            rows="3"
+                            t-att-value="state.noteText"
+                            t-on-input="onNoteInputChange"
+                            t-on-keydown="onNoteKeydown"
+                            placeholder="Describe the defect..."/>
+                    </div>
+                    <div class="defect_note_popup_footer">
+                        <button type="button" class="btn btn-sm btn-outline-danger" t-on-click="removeDefect">
+                            <i class="fa fa-trash-o"/> Remove Defect
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary" t-on-click="saveNote">
+                            <i class="fa fa-check"/> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend sale order form to show defect indicator on order lines -->
+    <record id="view_order_form_defect_indicator" model="ir.ui.view">
+        <field name="name">sale.order.form.defect.indicator</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="after">
+                <field name="has_defects" column_invisible="True"/>
+                <button name="action_view_defects"
+                        type="object"
+                        class="btn-link p-0"
+                        icon="fa-exclamation-triangle text-warning"
+                        title="View Defects"
+                        invisible="not has_defects"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Sale order line form view with defect picker widget -->
+    <record id="view_sale_order_line_form_defect" model="ir.ui.view">
+        <field name="name">sale.order.line.form.defect</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_order_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+                <field name="has_defects" invisible="1"/>
+                <group string="Defect Information" invisible="not has_defects">
+                    <field name="defect_positions_json" widget="defect_positions" nolabel="1" colspan="2"/>
+                </group>
+                <group string="Defect Records" invisible="not has_defects">
+                    <field name="defect_ids" nolabel="1" colspan="2">
+                        <list editable="bottom">
+                            <field name="position_label" readonly="1"/>
+                            <field name="position_x" column_invisible="True"/>
+                            <field name="position_y" column_invisible="True"/>
+                            <field name="notes"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Sale order line defect list view -->
+    <record id="view_sale_order_line_defect_list" model="ir.ui.view">
+        <field name="name">sale.order.line.defect.list</field>
+        <field name="model">sale.order.line.defect</field>
+        <field name="arch" type="xml">
+            <list string="Defects" editable="bottom">
+                <field name="position_label"/>
+                <field name="position_x"/>
+                <field name="position_y"/>
+                <field name="notes"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Sale order line defect form view -->
+    <record id="view_sale_order_line_defect_form" model="ir.ui.view">
+        <field name="name">sale.order.line.defect.form</field>
+        <field name="model">sale.order.line.defect</field>
+        <field name="arch" type="xml">
+            <form string="Defect">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="sale_order_line_id"/>
+                            <field name="position_label"/>
+                        </group>
+                        <group>
+                            <field name="position_x"/>
+                            <field name="position_y"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

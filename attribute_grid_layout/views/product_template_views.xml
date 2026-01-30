@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend product template form to add defect picker configuration -->
+    <record id="product_template_form_view_defect_picker" model="ir.ui.view">
+        <field name="name">product.template.form.defect.picker</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Defect Picker" name="defect_picker">
+                    <group>
+                        <group string="Defect Picker Image">
+                            <field name="defect_picker_image" widget="image" class="oe_avatar"/>
+                        </group>
+                        <group string="Grid Configuration">
+                            <field name="defect_grid_rows"/>
+                            <field name="defect_grid_cols"/>
+                        </group>
+                    </group>
+                    <group string="Preview" invisible="not defect_picker_image">
+                        <div class="defect_picker_preview">
+                            <p class="text-muted">
+                                The defect picker grid will display a
+                                <field name="defect_grid_rows" widget="integer" readonly="1" class="d-inline"/> x
+                                <field name="defect_grid_cols" widget="integer" readonly="1" class="d-inline"/>
+                                grid over the uploaded image during the sales quoting process.
+                            </p>
+                        </div>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+</odoo>

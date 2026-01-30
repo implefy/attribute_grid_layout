@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Extend ProductConfiguratorDialog to add defect picker toggle button -->
+    <t t-name="attribute_grid_layout.ProductConfiguratorDefectButton" t-inherit="sale_product_configurator.ProductConfiguratorDialog" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('modal-body')]" position="inside">
+            <div t-if="defectState.hasDefectPicker" class="defect_picker_section mt-3 border-top pt-3">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <button type="button"
+                            t-attf-class="btn btn-sm {{ defectState.showDefectPicker ? 'btn-warning' : 'btn-outline-warning' }}"
+                            t-on-click="toggleDefectPicker">
+                        <i class="fa fa-crosshairs me-1"/>
+                        Mark Defects
+                        <span t-if="defectState.defectPositions.length > 0"
+                              class="badge bg-danger ms-1"
+                              t-esc="defectState.defectPositions.length"/>
+                    </button>
+                    <span t-if="defectState.defectPositions.length > 0" class="text-muted small">
+                        <t t-esc="defectState.defectPositions.length"/> defect(s) marked
+                    </span>
+                </div>
+
+                <div t-if="defectState.showDefectPicker" class="defect_picker_wrapper">
+                    <div t-if="defectState.loading" class="text-center py-4">
+                        <i class="fa fa-spinner fa-spin fa-2x text-muted"/>
+                    </div>
+                    <DefectPicker
+                        t-else=""
+                        productImage="defectState.productImage"
+                        initialPositions="defectState.defectPositions"
+                        onPositionsChange.bind="onDefectPositionsChange"
+                        readonly="false"
+                        gridRows="defectState.gridRows"
+                        gridCols="defectState.gridCols"/>
+                </div>
+            </div>
+        </xpath>
+    </t>
+
+</templates>
